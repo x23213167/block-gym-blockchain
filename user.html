@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PayApp 12.07</title>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.2.7-rc.0/web3.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #FFBD59;
+            font-family: 'Tahoma', sans-serif;
+            font-size: 20px;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        button {
+            background-color: #CB9C55;
+            font-size: 20px;
+            padding: 10px;
+            font-family: Impact;
+            cursor: pointer;
+            border: none;
+            margin-bottom: 10px;
+            width: 100%;
+            color: #FFF;
+            border-radius: 5px;
+            transition: background-color 0.2s ease;
+        }
+
+        input {
+            width: 100%;
+            height: 40px;
+            font-size: 20px;
+            font-family: tahoma;
+            outline: none;
+            padding: 0 10px;
+            margin-bottom: 10px;
+            border: 1px solid #333;
+            border-radius: 5px;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: row;
+            width: 80%;
+            justify-content: space-between;
+        }
+
+        #readArea,
+        #writeArea {
+            flex-basis: 48%;
+            background-color: #FFF;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        p {
+            margin-bottom: 10px;
+        }
+
+        button:hover {
+            background-color: rgb(42, 102, 215);
+        }
+
+        header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #FFBD59;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+
+        h1 {
+            font-size: 32px;
+            color: #FFF;
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+    <header id="header" class="fixed-top">
+        <div class="container d-flex align-items-center">
+            <h1 class="logo me-auto"><a href="/">BLOCK Gym</a></h1>
+            <nav id="navbar" class="navbar order-last order-lg-0">
+                <ul>
+                    <li><a class="nav-link active" href="/">Home</a></li>
+                    <li><a class="nav-link " href="/products">Collections</a></li>
+                    <li><a class="nav-link" href="/account_recharge">Ether Wallet</a></li>
+                    <li><a class="nav-link" href="/about.html">About</a></li>
+                    <li><a class="nav-link" href="/account.html">Account</a></li>
+                </ul>
+                <i class="bi bi-list mobile-nav-toggle"></i>
+            </nav>
+        </div>
+    </header>
+    <header>
+        <h1>Account Details</h1>
+        <header id="header" class="fixed-top">
+            <div class="container d-flex align-items-center">
+                <h1 class="logo me-auto"><a href="/">BLOCK Gym</a></h1>
+                <nav id="navbar" class="navbar order-last order-lg-0">
+                    <ul>
+                        <li><a class="nav-link active" href="/">Home</a></li>
+                        <li><a class="nav-link " href="/products">Collections</a></li>
+                        <li><a class="nav-link" href="/account_recharge">Ether Wallet</a></li>
+                        <li><a class="nav-link" href="/about.html">About</a></li>
+                        <li><a class="nav-link" href="/account.html">Account</a></li>
+                    </ul>
+                    <i class="bi bi-list mobile-nav-toggle"></i>
+                </nav>
+            </div>
+        </header>
+    </header>
+    <div class="container">
+        <div id="readArea"> <!-- READING FROM CONTRACT -->
+            <button onclick="connectMetamask()">CONNECT TO METAMASK</button>
+            <p id="userArea">Status: Not connected to Metamask</p>
+            <button onclick="connectContract()">CONNECT TO CONTRACT</button>
+            <p id="contractArea">Status: Not connected to Contract</p>
+            <button onclick="getContractAccount()"> GET CONTRACT ACCOUNT </button>
+            <p id="contractAccount">Contract Account: Not Connected to Contract</p>
+            <button onclick="getBalanceApple()">GET BALANCE OF THE CONTRACT</button>
+            <p id="balanceArea">Balance: Not Connected to Contract</p>
+        </div>
+
+        <div id="writeArea"><!-- WRITING TO CONTRACT -->
+            <button onclick="depositContract()">Send ether to the Contract</button>
+            <input type="number" id="depositInput" placeholder="Enter Amount">
+            <button onclick="withdraw()">WITHDRAW ETHER TO ANY ADDRESS</button>
+            <input type="text" id="addressInput" placeholder="Enter Address">
+            <input type="number" id="amountInput" placeholder="Enter Amount">
+        </div>
+    </div>
+
+
+
+    <script> // the below script code is convention in web3 in forming the communication with Web
+
+        let account;
+        const connectMetamask = async () => {
+            if (window.ethereum !== "undefined") {
+                const accounts = await ethereum.request({ method: "eth_requestAccounts" });
+                account = accounts[0];
+                document.getElementById("userArea").innerHTML = `User Account: ${account}`;
+            }
+        }
+
+        const connectContract = async () => {
+            const ABI = [
+                {
+                    inputs: [],
+                    name: "deposit",
+                    outputs: [],
+                    stateMutability: "payable",
+                    type: "function",
+                },
+                {
+                    inputs: [],
+                    name: "getAddress",
+                    outputs: [
+                        {
+                            internalType: "address",
+                            name: "",
+                            type: "address",
+                        },
+                    ],
+                    stateMutability: "view",
+                    type: "function",
+                },
+                {
+                    inputs: [],
+                    name: "getBalance",
+                    outputs: [
+                        {
+                            internalType: "uint256",
+                            name: "",
+                            type: "uint256",
+                        },
+                    ],
+                    stateMutability: "view",
+                    type: "function",
+                },
+                {
+                    inputs: [
+                        {
+                            internalType: "address payable",
+                            name: "_to",
+                            type: "address",
+                        },
+                        {
+                            internalType: "uint256",
+                            name: "_amount",
+                            type: "uint256",
+                        },
+                    ],
+                    name: "withdraw",
+                    outputs: [],
+                    stateMutability: "nonpayable",
+                    type: "function",
+                },
+            ]
+
+                ;
+            const Address = "0x0dF2B89F83C8a6EB9215E022dC1A11b1a2B482A6"; // Taking Address from Remix 
+            window.web3 = await new Web3(window.ethereum);
+            window.contract = await new window.web3.eth.Contract(ABI, Address);
+            document.getElementById("contractArea").innerHTML = "Connected to Contract"; // calling the elementID above
+        }
+
+        const getContractAccount = async () => {
+            const data = await window.contract.methods.getAddress().call();
+            document.getElementById("contractAccount").innerHTML = `Contract Account: ${data}`;
+        }
+
+        const getBalanceApple = async () => { // const getBalanceApple is the HTML function & .contract.getBalance is the smart contract function
+            const data = await window.contract.methods.getBalance().call();
+            document.getElementById("balanceArea").innerHTML = `Contract Balance: ${data}`;
+        }
+
+        const depositContract = async () => {
+           
+            const amount = document.getElementById("depositInput").value;
+            await window.contract.methods.deposit().send({ from: account, value: amount });
+        }
+
+        const withdraw = async () => {
+            const amount = document.getElementById("amountInput").value;
+            const address = document.getElementById("addressInput").value;
+            await window.contract.methods.withdraw(address, amount).send({ from: account });
+        }
+
+    </script>
+</body>
+
+</html>

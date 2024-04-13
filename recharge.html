@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <!-- Vendor CSS Files -->
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
+  <link href="vendor/animate.css/animate.min.css" rel="stylesheet">
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link href="css/style.css" rel="stylesheet">
+  <link href="css/widgets.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/web3@1.6.0/dist/web3.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <title>BLOCK Gym</title>
+
+  <style>
+    #redeemEther {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    #redeemEther h2 {
+      margin-bottom: 1rem;
+    }
+
+    #redeemForm .row {
+      display: flex;
+    }
+
+    #redeemForm .form-group {
+      flex: 1;
+    }
+
+    #redeemForm .form-group+.form-group {
+      padding-left: 20px;
+    }
+
+    #redeemForm .text-center {
+      margin-top: 6rem;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top">
+    <div class="container d-flex align-items-center">
+      <h1 class="logo me-auto"><a href="/">BLOCK Gym</a></h1>
+      <nav id="navbar" class="navbar order-last order-lg-0">
+        <ul>
+          <li><a class="nav-link " href="/">Home</a></li>
+          <li><a class="nav-link " href="/products">Collections</a></li>
+          <li><a class="nav-link active" href="/account_recharge">Ether Wallet</a></li>
+          <li><a class="nav-link" href="/about">About</a></li>
+          <li><a class="nav-link" href="/account">Account</a></li>
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav>
+    </div>
+  </header>
+  <!-- End Header -->
+
+  <main id="main" style="height:99vh;">
+    <!-- ======= Appointment Section ======= -->
+    <section id="appointment" class="appointment section-bg">
+      <div class="container">
+        <div class="section-title">
+          <h2>Ether Wallet</h2>
+        </div>
+
+        <div id="redeemEther">
+          <div style="margin-top:50px;width:600px;display:block;margin-left:auto;margin-right:auto;">
+            <h2 class="color-wht">Live Football results</h2>
+            <div>
+              <!-- Cryptocurrency Price Widget -->
+              <div id="wg-api-football-games"
+                   data-host="api-football-v1.p.rapidapi.com"
+                   <!-- data-key="1de9bf44b2amsheb30ae5006070f1p15ed78jsnc65a2ddf956e" -->
+                   data-key ="de9bf44b2amsheb30ae5006070f1p15ed78jsnc65a2ddf956e"
+                   data-date="2024-03-10"
+                   data-league="39"
+                   data-season="2023"
+                   data-theme=""
+                   data-refresh="15"
+                   data-show-toolbar="true"
+                   data-show-errors="false"
+                   data-show-logos="true"
+                   data-modal-game="true"
+                   data-modal-standings="true"
+                   data-modal-show-logos="true">
+              </div>
+              <script
+                  type="module"
+                  src="https://widgets.api-sports.io/2.0.3/widgets.js">
+              </script>
+
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:50px;width:600px;display:block;margin-left:auto;margin-right:auto;">
+          <p class="color-wht">Ether Wallet from Contract worth <span id="etherBalance"></span> ETH.</p>
+          <form id="redeemForm" class="php-email-form p-5" style="border-radius:10px;">
+            <div class="row form-group">
+              <div class="col-12 mb-3">
+                <input type="text" name="name" class="form-control" id="accountAddress"
+                  placeholder="Enter Account Address" required>
+              </div>
+              <div class="col-12 mt-3 mt-md-0">
+                <input type="text" class="form-control" name="email" id="enteredEther" placeholder="Enter Ether"
+                  required>
+              </div>
+            </div>
+            <div class="text-center mt-2"><button type="submit" id="redeemNow">Redeem Now</button></div>
+          </form>
+        </div>
+      </div>
+      </div>
+    </section><!-- End Appointment Section -->
+  </main><!-- End #main -->
+
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
+  <!-- Vendor JS Files -->
+  <script src="vendor/purecounter/purecounter_vanilla.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="vendor/swiper/swiper-bundle.min.js"></script>
+  <!-- Template Main JS File -->
+  <script src="js/main.js"></script>
+  <script src="js/script.js"></script>
+</body>
+
+</html>

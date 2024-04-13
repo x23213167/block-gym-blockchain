@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Details</title>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.2.7-rc.0/web3.min.js"></script>
+    <!-- Vendor CSS Files -->
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
+    <link href="vendor/animate.css/animate.min.css" rel="stylesheet">
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.6.0/dist/web3.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <style>
+        /* Main Layout Adjustments */
+/* Main Layout Adjustments */
+#main {
+    padding: 0 100px; /* Uniform padding */
+    height: 100vh; /* Full viewport height */
+    display: flex;
+    align-items: center; /* Center content vertically */
+    justify-content: center; /* Center content horizontally */
+    background: linear-gradient(to right, #eef2f3, #8e9eab); /* Subtle background gradient */
+}
+
+/* Central Container */
+.container {
+    max-width: 800px;
+    width: 90%; /* Responsive width adjustment */
+    background: #ffffff; /* Pure white background for cleaner look */
+    padding: 40px; /* Increased padding for better layout */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); /* Deeper shadow for more depth */
+    border-radius: 15px; /* Larger rounded corners */
+    margin: 20px auto; /* Vertical spacing and horizontal auto for centering */
+    border: 1px solid #ccc; /* Subtle border for definition */
+}
+
+/* Text and Input Areas */
+#readArea, #writeArea {
+    background-color: #fff;
+    border: 1px solid #eceff1; /* Lighter, more modern border color */
+    border-radius: 15px; /* Increased rounded corners for consistency */
+    padding: 30px; /* Increased padding for more space */
+    margin-bottom: 30px; /* Increased bottom margin for better separation */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* Updated shadow for softness */
+}
+
+/* Buttons Styling */
+#readArea button, #writeArea button {
+    background-color: #3498db; /* Updated button color for freshness */
+    color: white;
+    padding: 15px 30px; /* Slightly larger buttons */
+    font-size: 18px; /* Larger font size for readability */
+    border-radius: 8px; /* Smoothed corners */
+    cursor: pointer;
+    transition: all 0.3s ease-in-out; /* Unified transition for all properties */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth on buttons */
+}
+
+#readArea button:hover, #writeArea button:hover {
+    background-color: #21618c; /* Darker shade on hover for better contrast */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Increased shadow on hover for lift effect */
+}
+
+/* Paragraphs and Inputs */
+#readArea p, #writeArea input {
+    margin: 20px 0; /* Adjusted margins for cleaner spacing */
+    line-height: 1.6; /* Slightly increased line height for readability */
+}
+
+#writeArea input {
+    width: 100%;
+    padding: 15px 20px; /* Comfortable padding */
+    border: 1px solid #d6d6d6; /* Softer border color */
+    border-radius: 8px; /* Consistent rounded corners */
+    box-sizing: border-box;
+    transition: all 0.3s ease; /* Smooth transition for focus and border color */
+}
+
+#writeArea input:focus {
+    border-color: #3498db; /* Highlight input box with theme color when focused */
+    box-shadow: 0 0 8px rgba(52, 152, 219, 0.5); /* Soft glow effect on focus */
+    outline: none;
+}
+
+
+    </style>
+        
+</head>
+
+<body>
+    <header id="header" class="fixed-top">
+        <div class="container d-flex align-items-center">
+            <h1 class="logo me-auto"><a href="/">BLOCK Gym</a></h1>
+            <nav id="navbar" class="navbar order-last order-lg-0">
+                <ul>
+                    <li><a class="nav-link" href="/">Home</a></li>
+                    <li><a class="nav-link " href="/products">Collections</a></li>
+                    <li><a class="nav-link" href="/account_recharge">Ether Wallet</a></li>
+                    <li><a class="nav-link" href="/about">About</a></li>
+                    <li><a class="nav-link active" href="/account">Account</a></li>
+                </ul>
+                <i class="bi bi-list mobile-nav-toggle"></i>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main" role="main" style="margin-top:150px;">
+            <div class="row">
+                <div class="col-6">
+                    <div id="readArea"> <!-- READING FROM CONTRACT -->
+                        <h5>Connections:</h5><br>
+
+                        <button onclick="connectMetamask()">METAMASK Status</button>
+                        <p id="userArea">Status: Not connected to Metamask</p>
+                        <button onclick="connectContract()">Connect to Connection</button>
+                        <p id="contractArea">Status: Not connected to Contract</p>
+                        <button onclick="getContractAccount()">Contract Account Address</button>
+                        <p id="contractAccount">Contract Account: Not Connected to Contract</p>
+                        <button onclick="getBalance()">Contract Balance</button>
+                        <p id="balanceArea">Balance: Not Connected to Contract</p>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div id="writeArea"><!-- WRITING TO CONTRACT -->
+                        <h5>Transactions:</h5><br>
+                        <input type="number" id="depositInput" placeholder="Enter Amount In ETH">
+                        <button onclick="depositContract()">Add Ether to Contract</button>
+                        <input type="text" id="addressInput" placeholder="Enter Account Address">
+                        <input type="number" id="amountInput" placeholder="Enter Amount In ETH">
+                        <button onclick="withdraw()">Transfer ETH to Metamask</button>
+                    </div>
+
+                </div>
+            </div>
+    </main>
+
+
+
+    <script> // the below script code is convention in web3 in forming the communication with Web
+
+        let account;
+        const connectMetamask = async () => {
+            if (window.ethereum !== "undefined") {
+                const accounts = await ethereum.request({ method: "eth_requestAccounts" });
+                account = accounts[0];
+                document.getElementById("userArea").innerHTML = `User Account: ${account}`;
+            }
+        }
+
+        const connectContract = async () => {
+            const ABI = [
+                {
+                    inputs: [],
+                    name: "deposit",
+                    outputs: [],
+                    stateMutability: "payable",
+                    type: "function",
+                },
+                {
+                    inputs: [],
+                    name: "getAddress",
+                    outputs: [
+                        {
+                            internalType: "address",
+                            name: "",
+                            type: "address",
+                        },
+                    ],
+                    stateMutability: "view",
+                    type: "function",
+                },
+                {
+                    inputs: [],
+                    name: "getBalance",
+                    outputs: [
+                        {
+                            internalType: "uint256",
+                            name: "",
+                            type: "uint256",
+                        },
+                    ],
+                    stateMutability: "view",
+                    type: "function",
+                },
+                {
+                    inputs: [
+                        {
+                            internalType: "address payable",
+                            name: "_to",
+                            type: "address",
+                        },
+                        {
+                            internalType: "uint256",
+                            name: "_amount",
+                            type: "uint256",
+                        },
+                    ],
+                    name: "withdraw",
+                    outputs: [],
+                    stateMutability: "nonpayable",
+                    type: "function",
+                },
+            ]
+
+                ;
+            const Address = "0x0dF2B89F83C8a6EB9215E022dC1A11b1a2B482A6"; // Taking Address from Remix 
+            window.web3 = await new Web3(window.ethereum);
+            window.contract = await new window.web3.eth.Contract(ABI, Address);
+            document.getElementById("contractArea").innerHTML = "Connected to Contract"; // calling the elementID above
+        }
+
+        const getContractAccount = async () => {
+            const data = await window.contract.methods.getAddress().call();
+            document.getElementById("contractAccount").innerHTML = `Contract Account: ${data}`;
+        }
+
+        const getBalance = async () => { // const getBalance is the HTML function & .contract.getBalance is the smart contract function
+            const data = await window.contract.methods.getBalance().call();
+            const ETHBalance = window.web3.utils.fromWei(data, "ether");
+            document.getElementById("balanceArea").innerHTML = `Contract Balance: ${ETHBalance} ETH`;
+        }
+
+        const depositContract = async () => {
+            const amount = document.getElementById("depositInput").value;
+            const amountInWei = window.web3.utils.toWei(amount, "ether");
+            await window.contract.methods.deposit().send({ from: account, value: amountInWei });
+        }
+
+        const withdraw = async () => {
+            const amount = document.getElementById("amountInput").value;
+            const address = document.getElementById("addressInput").value;
+            // Convert amount to Wei
+            const amountInWei = window.web3.utils.toWei(amount, "ether");
+            await window.contract.methods.withdraw(address, amountInWei).send({ from: account });
+        }
+
+    </script>
+    <!-- Vendor JS Files -->
+    <script src=" vendor/purecounter/purecounter_vanilla.js">
+    </script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="vendor/glightbox/js/glightbox.min.js"></script>
+    <script src="vendor/swiper/swiper-bundle.min.js"></script>
+
+    <!-- Template Main JS File -->
+    <script src="js/main.js"></script>
+    <script src="js/script.js"></script>
+</body>
+
+</html>
